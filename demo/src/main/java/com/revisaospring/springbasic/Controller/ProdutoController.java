@@ -9,6 +9,7 @@ import com.revisaospring.springbasic.Entity.Produto;
 import com.revisaospring.springbasic.Service.ProdutoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -44,5 +45,24 @@ oProdutoService.cadastrarProduto(oProduto);
      return "redirect:/produtoctr/listarProduto";
  }
  
-    
+        @PostMapping("/salvarProduto")
+    public String cadastrarProduto(@ModelAttribute Produto oProduto) {
+
+        oProdutoService.cadastrarProduto(oProduto);
+        return "redirect:/produtoctr/listarProduto";
+
+    }
+
+    @GetMapping("/formAlterar/{id}")
+    public String telaAlterarProduto(@PathVariable long id, Model oModel){
+     
+        Produto oProduto = oProdutoService.buscarPorId(id).orElseThrow(
+            () -> new IllegalArgumentException("Produto não Encontrado"));
+
+            oModel.addAttribute( "produtoEditar", oProduto);
+            return "editarProduto";
+    }
+
 }
+
+
